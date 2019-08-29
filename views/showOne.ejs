@@ -1,0 +1,23 @@
+<%include ./partials/header %>
+</head>
+
+<body>
+    <%include ./partials/navbar %>
+    <section>
+        <div class="jumbotron my-1"></div>
+    </section>
+    <section id="show-groceries">
+        <div class="row justify-content-center">
+            <% product.map(each =>{ %>
+            <div class="col-lg-5" style="width: 14rem; height: 20rem;">
+                <img src="<%=each.product_image%>" class="card-img-top" alt="<%= each.product_name %>">
+            </div>
+            <div class="col-lg-7">
+                <h6 class=""><%= each.product_name %></h6>
+                <p class=""><%= each.product_price %></p>
+                <p class=""><%= each.product_descript %></p>
+            </div>
+            <% }) %>
+        </div>
+    </section>
+    <%include ./partials/footer %>

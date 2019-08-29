@@ -21,6 +21,15 @@ app.get("/", (req, res) => {
         if (err) throw err;
         res.render("index", { title: "Home", products: response });
     });
+    connection.end();
+});
+app.get("/:product_id", (req, res) => {
+    // let query = "SELECT * FROM groceries WHERE ?"
+    connection.query("SELECT * FROM groceries WHERE ?", { id: req.params.product_id }, (err, response) => {
+        if (err) throw err;
+        res.render("showOne", { title: "Home", product: response });
+    });
+    connection.end();
 });
 const PORT = 3000 || process.env.PORT;
 

@@ -1,0 +1,15 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: black;
+}
+#show-groceries{
+    /* width: 83%; */
+    /* margin: 1rem auto 1rem auto; */
+}
+.card, .jumbotron{
+    border-radius: 0;
+}
