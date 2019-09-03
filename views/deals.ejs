@@ -9,6 +9,7 @@
     <section id="show-groceries">
         <div class="d-sm-flex row justify-content-center">
             <% products.map(product=>{ %>
+            <%if(product.product_price <= parseFloat(price)){%>
             <div class="my-1 mx-1 card text-center" style="width: 14rem; height: 20rem;">
                 <img src="<%=product.product_image%>" class="card-img-top" alt="<%= product.product_name %>">
                 <div class="card-body">
@@ -19,9 +20,9 @@
                         <button value="<%= product.id %>" class="btn btn-sm btn-success">Send To Cart</button>
                     </p>
                     <a href="/<%= product.id %>">See Product</a>
-                    <small><%= product.id%></small>
                 </div>
             </div>
+            <%}%>
             <% }) %>
         </div>
     </section>

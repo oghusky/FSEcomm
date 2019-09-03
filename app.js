@@ -1,8 +1,6 @@
 const express = require("express");
 const app = express();
-const dbURL = require("./utils/config.env");
 const mysql = require("mysql");
-const Products = require("./models/Products");
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -15,22 +13,41 @@ const connection = mysql.createConnection({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.set("view engine", "ejs");
+// show all products
 app.get("/", (req, res) => {
-    let query = "SELECT * FROM groceries"
+    let query = "SELECT * FROM groceries ORDER BY id DESC"
     connection.query(query, {}, (err, response) => {
         if (err) throw err;
         res.render("index", { title: "Home", products: response });
     });
-    connection.end();
 });
+// show product by id
 app.get("/:product_id", (req, res) => {
-    // let query = "SELECT * FROM groceries WHERE ?"
-    connection.query("SELECT * FROM groceries WHERE ?", { id: req.params.product_id }, (err, response) => {
+    let query = "SELECT * FROM groceries WHERE ?"
+    connection.query(query, { id: req.params.product_id }, (err, response) => {
         if (err) throw err;
-        res.render("showOne", { title: "Home", product: response });
+        res.render("showOne", { title: "Show By ID", product: response });
     });
-    connection.end();
 });
+// show product by rating
+app.get("/rating/:product_rating", (req, res) => {
+    let query = "SELECT * FROM groceries WHERE ? ORDER BY id DESC"
+    connection.query(query, { product_rating: req.params.product_rating }, (err, response) => {
+        if (err) throw err;
+        res.render("ratings", { title: "Show By Rating", products: response, rating: req.params.product_rating });
+    });
+});
+app.get("/deals/:product_price/", (req, res) => {
+    let query = "SELECT * FROM groceries WHERE product_price <= ?";
+    connection.query(query, req.params.product_price, (err, response, fields) => {
+        if (err) throw err;
+        res.render("deals", { title: "Show Deals", products: response, price: req.params.product_price });
+        console.log(req.params.product_price);
+        console.log(response);
+        console.log(fields);
+    });
+});
+// show items
 const PORT = 3000 || process.env.PORT;
 
 app.listen(PORT, () => {
